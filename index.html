@@ -1,0 +1,920 @@
+<!doctype html>
+<html lang="ar" dir="rtl" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pico Media - Portfolio</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;900&amp;family=Inter:wght@300;400;500;600;700;800;900&amp;display=swap" rel="stylesheet">
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body, html {
+            height: 100%;
+            overflow-x: hidden;
+        }
+        
+        body {
+            font-family: 'Tajawal', sans-serif;
+            background: #0B0B0C;
+            color: #E8E8E8;
+        }
+        
+        body.ltr {
+            font-family: 'Inter', sans-serif;
+        }
+        
+        .main-wrapper {
+            width: 100%;
+            min-height: 100%;
+            overflow-x: hidden;
+        }
+        
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #0B0B0C;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: #C9A961;
+            border-radius: 4px;
+        }
+        
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        .text-gold {
+            color: #C9A961;
+        }
+        
+        .bg-gold {
+            background-color: #C9A961;
+        }
+        
+        .border-gold {
+            border-color: #C9A961;
+        }
+        
+        .section-padding {
+            padding: 120px 24px;
+        }
+        
+        @media (max-width: 768px) {
+            .section-padding {
+                padding: 80px 20px;
+            }
+        }
+        
+        .section-title {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 900;
+            margin-bottom: 3rem;
+            line-height: 1.2;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 900;
+            color: #C9A961;
+            display: block;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            color: #A0A0A0;
+            margin-top: 0.5rem;
+        }
+        
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+        
+        .portfolio-item {
+            cursor: pointer;
+            overflow: hidden;
+            border-radius: 16px;
+            position: relative;
+            aspect-ratio: 4/3;
+            background: #1a1a1a;
+        }
+        
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .portfolio-item:hover img {
+            transform: scale(1.08);
+        }
+        
+        .portfolio-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(11, 11, 12, 0.95), transparent);
+            padding: 2rem;
+            transform: translateY(100%);
+            transition: transform 0.4s ease;
+        }
+        
+        .portfolio-item:hover .portfolio-overlay {
+            transform: translateY(0);
+        }
+        
+        .portfolio-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #C9A961;
+        }
+        
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(11, 11, 12, 0.98);
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            overflow-y: auto;
+            padding: 2rem;
+        }
+        
+        .modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 4rem 0;
+        }
+        
+        .modal-close {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            width: 50px;
+            height: 50px;
+            background: rgba(201, 169, 97, 0.2);
+            border: 2px solid #C9A961;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 2001;
+            font-size: 1.5rem;
+            color: #C9A961;
+        }
+        
+        body[dir="ltr"] .modal-close {
+            left: auto;
+            right: 2rem;
+        }
+        
+        .modal-close:hover {
+            background: #C9A961;
+            color: #0B0B0C;
+            transform: rotate(90deg);
+        }
+        
+        .modal-hero {
+            width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            margin-bottom: 3rem;
+            border-radius: 16px;
+        }
+        
+        .modal-gallery {
+            display: grid;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+        
+        .modal-gallery img {
+            width: 100%;
+            border-radius: 16px;
+            transition: transform 0.4s ease;
+        }
+        
+        .modal-gallery img:hover {
+            transform: scale(1.02);
+        }
+        
+        .timeline-item {
+            border-right: 2px solid rgba(201, 169, 97, 0.3);
+            padding-right: 2rem;
+            padding-bottom: 2rem;
+            position: relative;
+        }
+        
+        body[dir="ltr"] .timeline-item {
+            border-right: none;
+            border-left: 2px solid rgba(201, 169, 97, 0.3);
+            padding-right: 0;
+            padding-left: 2rem;
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: 0;
+            width: 10px;
+            height: 10px;
+            background: #C9A961;
+            border-radius: 50%;
+        }
+        
+        body[dir="ltr"] .timeline-item::before {
+            right: auto;
+            left: -6px;
+        }
+        
+        .timeline-year {
+            font-size: 0.9rem;
+            color: #C9A961;
+            font-weight: 600;
+        }
+        
+        .timeline-company {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-top: 0.5rem;
+        }
+        
+        .skill-item {
+            margin-bottom: 2rem;
+        }
+        
+        .skill-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+        }
+        
+        .skill-name {
+            font-weight: 600;
+        }
+        
+        .skill-percent {
+            color: #C9A961;
+            font-weight: 700;
+        }
+        
+        .skill-bar {
+            height: 8px;
+            background: rgba(201, 169, 97, 0.1);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .skill-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #C9A961, #D4B574);
+            border-radius: 4px;
+            transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 0;
+        }
+        
+        .skill-item.visible .skill-fill {
+            width: var(--skill-width);
+        }
+        
+        .contact-form {
+            max-width: 600px;
+            margin: 3rem auto 0;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #C9A961;
+        }
+        
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 1rem;
+            background: rgba(201, 169, 97, 0.05);
+            border: 2px solid rgba(201, 169, 97, 0.2);
+            border-radius: 8px;
+            color: #E8E8E8;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: #C9A961;
+            background: rgba(201, 169, 97, 0.1);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+        
+        .btn-submit {
+            background: #C9A961;
+            color: #0B0B0C;
+            padding: 1rem 3rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+        
+        .btn-submit:hover {
+            background: #D4B574;
+            transform: translateY(-2px);
+        }
+        
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+        
+        .lang-toggle {
+            position: fixed;
+            top: 2rem;
+            left: 2rem;
+            z-index: 100;
+            background: rgba(201, 169, 97, 0.1);
+            border: 2px solid rgba(201, 169, 97, 0.3);
+            border-radius: 50px;
+            padding: 0.5rem;
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        body[dir="ltr"] .lang-toggle {
+            left: auto;
+            right: 2rem;
+        }
+        
+        .lang-btn {
+            padding: 0.5rem 1.2rem;
+            border: none;
+            background: transparent;
+            color: #A0A0A0;
+            cursor: pointer;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .lang-btn.active {
+            background: #C9A961;
+            color: #0B0B0C;
+        }
+        
+        .extra-gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .extra-gallery img {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 12px;
+            transition: transform 0.4s ease;
+            cursor: pointer;
+        }
+        
+        .extra-gallery img:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo-container {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        
+        .logo {
+            max-width: 150px;
+            height: auto;
+        }
+        
+        .cert-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        
+        .cert-item {
+            background: rgba(201, 169, 97, 0.05);
+            border: 1px solid rgba(201, 169, 97, 0.2);
+            padding: 1.5rem;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .cert-item:hover {
+            border-color: #C9A961;
+            transform: translateY(-4px);
+        }
+        
+        .cert-title {
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+        
+        .cert-year {
+            color: #C9A961;
+            font-size: 0.9rem;
+        }
+        
+        .contact-info {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+            justify-content: center;
+            margin-bottom: 3rem;
+        }
+        
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: rgba(201, 169, 97, 0.05);
+            padding: 1rem 2rem;
+            border-radius: 50px;
+            border: 2px solid rgba(201, 169, 97, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .contact-item:hover {
+            border-color: #C9A961;
+            transform: translateY(-2px);
+        }
+        
+        .contact-icon {
+            width: 24px;
+            height: 24px;
+            color: #C9A961;
+        }
+        
+        .contact-link {
+            color: #E8E8E8;
+            text-decoration: none;
+            font-weight: 500;
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+ </head>
+ <body class="h-full">
+  <div class="main-wrapper">
+   <div class="lang-toggle"><button class="lang-btn active" data-lang="ar">عربي</button> <button class="lang-btn" data-lang="en">EN</button>
+   </div>
+   <main>
+    <section class="section-padding" id="profile">
+     <div class="max-w-6xl mx-auto">
+      <div class="logo-container"><img src="https://res.cloudinary.com/duaec3vl4/image/upload/v1767508906/Picsart_26-01-04_09-40-07-527_ina23d.png" alt="Pico Media Logo" class="logo">
+      </div>
+      <div class="text-center mb-16">
+       <h2 class="text-6xl md:text-8xl font-black mb-6" id="brandName">Pico Media</h2>
+       <p class="text-2xl md:text-3xl font-light mb-4 text-gold" id="roleText">مسوق إلكتروني | مصمم جرافيك</p>
+       <p class="text-xl md:text-2xl text-gray-400 max-w-3xl mx-auto" id="tagline">نحوّل الأفكار إلى حضور رقمي مؤثر</p>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-4xl mx-auto">
+       <div class="stat-item"><span class="stat-number">6+</span>
+        <p class="stat-label" data-ar="سنوات خبرة" data-en="Years Experience">سنوات خبرة</p>
+       </div>
+       <div class="stat-item"><span class="stat-number">50+</span>
+        <p class="stat-label" data-ar="مشروع ناجح" data-en="Successful Projects">مشروع ناجح</p>
+       </div>
+       <div class="stat-item"><span class="stat-number">98%</span>
+        <p class="stat-label" data-ar="رضا العملاء" data-en="Client Satisfaction">رضا العملاء</p>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section class="section-padding bg-black bg-opacity-30">
+     <div class="max-w-7xl mx-auto">
+      <h2 class="section-title text-center mb-20" data-ar="أعمالنا" data-en="Our Work">أعمالنا</h2>
+      <div class="portfolio-grid">
+       <div class="portfolio-item" data-project="sudi"><img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509281/13_r4fj91.jpg" alt="SUDI Identity">
+        <div class="portfolio-overlay">
+         <h3 class="portfolio-title">SUDI</h3>
+        </div>
+       </div>
+       <div class="portfolio-item" data-project="durrat"><img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509584/1_ft58mi.jpg" alt="Durrat Al Nuzha">
+        <div class="portfolio-overlay">
+         <h3 class="portfolio-title" data-ar="درة النزهة" data-en="Durrat Al Nuzha">درة النزهة</h3>
+        </div>
+       </div>
+       <div class="portfolio-item" data-project="onmen"><img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509760/1_pzifkr.jpg" alt="ONMEN">
+        <div class="portfolio-overlay">
+         <h3 class="portfolio-title">ONMEN</h3>
+        </div>
+       </div>
+       <div class="portfolio-item" data-project="mukhbaza"><img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509915/1_vmmglo.jpg" alt="Mukhbaza Iskanor">
+        <div class="portfolio-overlay">
+         <h3 class="portfolio-title" data-ar="مخبزة إسكنر" data-en="Mukhbaza Iskanor">مخبزة إسكنر</h3>
+        </div>
+       </div>
+       <div class="portfolio-item" data-project="bry"><img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767510161/1_acekn6.jpg" alt="BRY">
+        <div class="portfolio-overlay">
+         <h3 class="portfolio-title">BRY</h3>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section class="section-padding">
+     <div class="max-w-7xl mx-auto">
+      <h2 class="section-title text-center mb-12" data-ar="معرض أعمال إضافية" data-en="Additional Work Gallery">معرض أعمال إضافية</h2>
+      <div class="extra-gallery"><img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767510971/WhatsApp_Image_2026-01-04_at_10.11.25_AM_ck4mpo.jpg" alt="Extra Work"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767510967/WhatsApp_Image_2026-01-04_at_10.11.03_AM_1_hdqqeq.jpg" alt="Extra Work"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767510964/WhatsApp_Image_2026-01-04_at_10.11.02_AM_1_oyf82m.jpg" alt="Extra Work"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767510964/WhatsApp_Image_2026-01-04_at_10.11.01_AM_z39oxa.jpg" alt="Extra Work"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767510958/WhatsApp_Image_2026-01-04_at_10.08.59_AM_o0adfv.jpg" alt="Extra Work">
+      </div>
+     </div>
+    </section>
+    <section class="section-padding bg-black bg-opacity-30">
+     <div class="max-w-5xl mx-auto">
+      <h2 class="section-title text-center mb-16" data-ar="الخبرة المهنية" data-en="Professional Experience">الخبرة المهنية</h2>
+      <div class="mb-12">
+       <p class="text-xl text-center text-gray-400 mb-12" data-ar="إدارة المحتوى والتسويق — 3 سنوات" data-en="Marketing &amp; Content Management — 3 Years">إدارة المحتوى والتسويق — 3 سنوات</p>
+       <div class="max-w-3xl mx-auto">
+        <div class="timeline-item">
+         <p class="timeline-year">2025</p>
+         <h3 class="timeline-company" data-ar="الباقر للطاقة الشمسية" data-en="Al Baqer Solar Energy">الباقر للطاقة الشمسية</h3>
+        </div>
+        <div class="timeline-item">
+         <p class="timeline-year">2025</p>
+         <h3 class="timeline-company">Quba Perfumery</h3>
+        </div>
+        <div class="timeline-item">
+         <p class="timeline-year">2023–2024</p>
+         <h3 class="timeline-company" data-ar="درة النزهة" data-en="Durrat Al Nuzha">درة النزهة</h3>
+        </div>
+        <div class="timeline-item">
+         <p class="timeline-year">2024</p>
+         <h3 class="timeline-company" data-ar="شيشي بي الصينية" data-en="Chichi B Chinese">شيشي بي الصينية</h3>
+        </div>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section class="section-padding">
+     <div class="max-w-6xl mx-auto">
+      <h2 class="section-title text-center mb-16" data-ar="التعليم والشهادات" data-en="Education &amp; Certifications">التعليم والشهادات</h2>
+      <div class="cert-list">
+       <div class="cert-item">
+        <p class="cert-title" data-ar="الذكاء الاصطناعي والأمن السيبراني" data-en="AI &amp; Cybersecurity">الذكاء الاصطناعي والأمن السيبراني</p>
+        <p class="cert-year">2025</p>
+       </div>
+       <div class="cert-item">
+        <p class="cert-title" data-ar="بايثون" data-en="Python Programming">بايثون</p>
+        <p class="cert-year">2025</p>
+       </div>
+       <div class="cert-item">
+        <p class="cert-title" data-ar="المركبات ذاتية القيادة والروبوتات" data-en="Autonomous Vehicles &amp; Robotics">المركبات ذاتية القيادة والروبوتات</p>
+        <p class="cert-year">2025</p>
+       </div>
+       <div class="cert-item">
+        <p class="cert-title" data-ar="التسويق الرقمي" data-en="Digital Marketing">التسويق الرقمي</p>
+        <p class="cert-year">2024</p>
+       </div>
+       <div class="cert-item">
+        <p class="cert-title" data-ar="دورات جوجل المتقدمة" data-en="Google Advanced Courses">دورات جوجل المتقدمة</p>
+        <p class="cert-year">2024</p>
+       </div>
+       <div class="cert-item">
+        <p class="cert-title" data-ar="تصميم جرافيك - جوجل" data-en="Google Graphic Design">تصميم جرافيك - جوجل</p>
+        <p class="cert-year">2023</p>
+       </div>
+       <div class="cert-item">
+        <p class="cert-title">I Learning</p>
+        <p class="cert-year">2022</p>
+       </div>
+       <div class="cert-item">
+        <p class="cert-title" data-ar="الأكاديمية الألمانية" data-en="German Academy Certificate">الأكاديمية الألمانية</p>
+        <p class="cert-year">2019–2021</p>
+       </div>
+       <div class="cert-item">
+        <p class="cert-title" data-ar="C++ و مايكروسوفت أوفيس" data-en="C++ &amp; Microsoft Office">C++ و مايكروسوفت أوفيس</p>
+        <p class="cert-year">2019</p>
+       </div>
+       <div class="cert-item">
+        <p class="cert-title" data-ar="دبلوم الكهرباء وفحص المركبات" data-en="Diploma: Electricity &amp; Vehicle Inspection">دبلوم الكهرباء وفحص المركبات</p>
+        <p class="cert-year"></p>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section class="section-padding bg-black bg-opacity-30">
+     <div class="max-w-4xl mx-auto">
+      <h2 class="section-title text-center mb-16" data-ar="المهارات" data-en="Skills">المهارات</h2>
+      <div class="skill-item" data-skill="95">
+       <div class="skill-header"><span class="skill-name">Photoshop</span> <span class="skill-percent">95%</span>
+       </div>
+       <div class="skill-bar">
+        <div class="skill-fill" style="--skill-width: 95%"></div>
+       </div>
+      </div>
+      <div class="skill-item" data-skill="90">
+       <div class="skill-header"><span class="skill-name">Illustrator</span> <span class="skill-percent">90%</span>
+       </div>
+       <div class="skill-bar">
+        <div class="skill-fill" style="--skill-width: 90%"></div>
+       </div>
+      </div>
+      <div class="skill-item" data-skill="85">
+       <div class="skill-header"><span class="skill-name">InDesign</span> <span class="skill-percent">85%</span>
+       </div>
+       <div class="skill-bar">
+        <div class="skill-fill" style="--skill-width: 85%"></div>
+       </div>
+      </div>
+      <div class="skill-item" data-skill="80">
+       <div class="skill-header"><span class="skill-name" data-ar="أدوات الذكاء الاصطناعي" data-en="AI Tools">أدوات الذكاء الاصطناعي</span> <span class="skill-percent">80%</span>
+       </div>
+       <div class="skill-bar">
+        <div class="skill-fill" style="--skill-width: 80%"></div>
+       </div>
+      </div>
+      <div class="skill-item" data-skill="88">
+       <div class="skill-header"><span class="skill-name" data-ar="التحليلات" data-en="Analytics">التحليلات</span> <span class="skill-percent">88%</span>
+       </div>
+       <div class="skill-bar">
+        <div class="skill-fill" style="--skill-width: 88%"></div>
+       </div>
+      </div>
+     </div>
+    </section>
+    <section class="section-padding">
+     <div class="max-w-6xl mx-auto">
+      <h2 class="section-title text-center mb-12" id="contactTitle" data-ar="لنبدأ مشروعك" data-en="Let's Start Your Project">لنبدأ مشروعك</h2>
+      <div class="contact-info">
+       <div class="contact-item">
+        <svg class="contact-icon" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+        </svg><a href="mailto:picorajab@gmail.com" class="contact-link" id="emailLink">picorajab@gmail.com</a>
+       </div>
+       <div class="contact-item">
+        <svg class="contact-icon" fill="currentColor" viewbox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
+        </svg><a href="https://wa.me/966503870362" target="_blank" rel="noopener noreferrer" class="contact-link" id="whatsappLink">+966503870362</a>
+       </div>
+      </div>
+      <form class="contact-form" id="contactForm">
+       <div class="form-group"><label for="name" class="form-label" data-ar="الاسم" data-en="Name">الاسم</label> <input type="text" id="name" class="form-input" required>
+       </div>
+       <div class="form-group"><label for="email" class="form-label" data-ar="البريد الإلكتروني" data-en="Email">البريد الإلكتروني</label> <input type="email" id="email" class="form-input" required>
+       </div>
+       <div class="form-group"><label for="message" class="form-label" data-ar="الرسالة" data-en="Message">الرسالة</label> <textarea id="message" class="form-textarea" required></textarea>
+       </div><button type="submit" class="btn-submit" data-ar="إرسال" data-en="Send">إرسال</button>
+      </form>
+     </div>
+    </section>
+   </main>
+   <div class="modal" id="modalSudi">
+    <div class="modal-close">
+     ×
+    </div>
+    <div class="modal-content"><img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509281/13_r4fj91.jpg" alt="SUDI Logo" class="modal-hero">
+     <div class="modal-gallery"><img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509281/4_voqkkw.jpg" alt="SUDI"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509279/9_nfpwfl.jpg" alt="SUDI"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509277/2_uzwq1u.jpg" alt="SUDI"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509274/8_yszugw.jpg" alt="SUDI">
+     </div>
+    </div>
+   </div>
+   <div class="modal" id="modalDurrat">
+    <div class="modal-close">
+     ×
+    </div>
+    <div class="modal-content"><img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509584/1_ft58mi.jpg" alt="Durrat Logo" class="modal-hero">
+     <div class="modal-gallery"><img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509584/8_moznrh.jpg" alt="Durrat"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509583/6_ovqgha.jpg" alt="Durrat"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509585/10_en6ifv.jpg" alt="Durrat"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509600/12_tcmwoc.jpg" alt="Durrat"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509586/11_ahqdpz.jpg" alt="Durrat">
+     </div>
+    </div>
+   </div>
+   <div class="modal" id="modalOnmen">
+    <div class="modal-close">
+     ×
+    </div>
+    <div class="modal-content"><img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509760/1_pzifkr.jpg" alt="ONMEN Logo" class="modal-hero">
+     <div class="modal-gallery"><img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509756/2_auwano.jpg" alt="ONMEN"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509756/8_p6kb0d.jpg" alt="ONMEN"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509756/11_xcqjol.jpg" alt="ONMEN">
+     </div>
+    </div>
+   </div>
+   <div class="modal" id="modalMukhbaza">
+    <div class="modal-close">
+     ×
+    </div>
+    <div class="modal-content"><img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509915/1_vmmglo.jpg" alt="Mukhbaza Logo" class="modal-hero">
+     <div class="modal-gallery"><img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509915/3_o7snyq.jpg" alt="Mukhbaza"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509915/9_d1nscx.jpg" alt="Mukhbaza"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509914/7_ctpdux.jpg" alt="Mukhbaza"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509922/11_jhem42.jpg" alt="Mukhbaza"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509920/12_i1urgh.jpg" alt="Mukhbaza"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509917/13_xk2pzy.jpg" alt="Mukhbaza"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767509919/14_m4hqqm.jpg" alt="Mukhbaza">
+     </div>
+    </div>
+   </div>
+   <div class="modal" id="modalBry">
+    <div class="modal-close">
+     ×
+    </div>
+    <div class="modal-content"><img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767510161/1_acekn6.jpg" alt="BRY Logo" class="modal-hero">
+     <div class="modal-gallery"><img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767510162/5_rhrvep.jpg" alt="BRY"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767510165/7_vuenrh.jpg" alt="BRY"> <img src="https://res.cloudinary.com/dsstn0i8a/image/upload/v1767510165/9_oq630d.jpg" alt="BRY">
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+        const defaultConfig = {
+            welcome_text: 'Welcome to Pico Media',
+            brand_name: 'Pico Media',
+            role_text: 'مسوق إلكتروني | مصمم جرافيك',
+            tagline: 'نحوّل الأفكار إلى حضور رقمي مؤثر',
+            contact_title: 'لنبدأ مشروعك',
+            email: 'picorajab@gmail.com',
+            whatsapp: '+966503870362'
+        };
+
+        async function onConfigChange(config) {
+            const brandName = document.getElementById('brandName');
+            const roleText = document.getElementById('roleText');
+            const tagline = document.getElementById('tagline');
+            const contactTitle = document.getElementById('contactTitle');
+            const emailLink = document.getElementById('emailLink');
+            const whatsappLink = document.getElementById('whatsappLink');
+
+            if (brandName) brandName.textContent = config.brand_name || defaultConfig.brand_name;
+            if (roleText) roleText.textContent = config.role_text || defaultConfig.role_text;
+            if (tagline) tagline.textContent = config.tagline || defaultConfig.tagline;
+            if (contactTitle) contactTitle.textContent = config.contact_title || defaultConfig.contact_title;
+            if (emailLink) {
+                emailLink.textContent = config.email || defaultConfig.email;
+                emailLink.href = `mailto:${config.email || defaultConfig.email}`;
+            }
+            if (whatsappLink) {
+                whatsappLink.textContent = config.whatsapp || defaultConfig.whatsapp;
+                whatsappLink.href = `https://wa.me/${(config.whatsapp || defaultConfig.whatsapp).replace(/[^0-9]/g, '')}`;
+            }
+        }
+
+        function mapToCapabilities(config) {
+            return {
+                recolorables: [],
+                borderables: [],
+                fontEditable: undefined,
+                fontSizeable: undefined
+            };
+        }
+
+        function mapToEditPanelValues(config) {
+            return new Map([
+                ['welcome_text', config.welcome_text || defaultConfig.welcome_text],
+                ['brand_name', config.brand_name || defaultConfig.brand_name],
+                ['role_text', config.role_text || defaultConfig.role_text],
+                ['tagline', config.tagline || defaultConfig.tagline],
+                ['contact_title', config.contact_title || defaultConfig.contact_title],
+                ['email', config.email || defaultConfig.email],
+                ['whatsapp', config.whatsapp || defaultConfig.whatsapp]
+            ]);
+        }
+
+        if (window.elementSdk) {
+            window.elementSdk.init({
+                defaultConfig,
+                onConfigChange,
+                mapToCapabilities,
+                mapToEditPanelValues
+            });
+        }
+
+        const portfolioItems = document.querySelectorAll('.portfolio-item');
+        const modals = {
+            sudi: document.getElementById('modalSudi'),
+            durrat: document.getElementById('modalDurrat'),
+            onmen: document.getElementById('modalOnmen'),
+            mukhbaza: document.getElementById('modalMukhbaza'),
+            bry: document.getElementById('modalBry')
+        };
+
+        portfolioItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const project = item.dataset.project;
+                if (modals[project]) {
+                    modals[project].classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+        });
+
+        document.querySelectorAll('.modal-close').forEach(btn => {
+            btn.addEventListener('click', () => {
+                Object.values(modals).forEach(modal => modal.classList.remove('active'));
+                document.body.style.overflow = '';
+            });
+        });
+
+        Object.values(modals).forEach(modal => {
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    modal.classList.remove('active');
+                    document.body.style.overflow = '';
+                }
+            });
+        });
+
+        const langBtns = document.querySelectorAll('.lang-btn');
+        let currentLang = 'ar';
+
+        langBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const lang = btn.dataset.lang;
+                if (lang === currentLang) return;
+                
+                currentLang = lang;
+                langBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+
+                const html = document.documentElement;
+                const body = document.body;
+
+                if (lang === 'en') {
+                    html.setAttribute('lang', 'en');
+                    html.setAttribute('dir', 'ltr');
+                    body.classList.add('ltr');
+                } else {
+                    html.setAttribute('lang', 'ar');
+                    html.setAttribute('dir', 'rtl');
+                    body.classList.remove('ltr');
+                }
+
+                document.querySelectorAll('[data-ar]').forEach(el => {
+                    const text = lang === 'ar' ? el.dataset.ar : el.dataset.en;
+                    if (text) {
+                        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+                            el.placeholder = text;
+                        } else {
+                            el.textContent = text;
+                        }
+                    }
+                });
+            });
+        });
+
+        const contactForm = document.getElementById('contactForm');
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+
+            const whatsappMsg = `الاسم: ${name}%0Aالبريد: ${email}%0Aالرسالة: ${message}`;
+            window.open(`https://wa.me/966503870362?text=${whatsappMsg}`, '_blank');
+            
+            contactForm.reset();
+        });
+
+        function revealSkills() {
+            const skills = document.querySelectorAll('.skill-item');
+            skills.forEach(skill => {
+                const rect = skill.getBoundingClientRect();
+                if (rect.top < window.innerHeight * 0.8) {
+                    skill.classList.add('visible');
+                }
+            });
+        }
+
+        window.addEventListener('scroll', revealSkills);
+        revealSkills();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b8904fcf646ed53',t:'MTc2NzUxMTcxMC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
